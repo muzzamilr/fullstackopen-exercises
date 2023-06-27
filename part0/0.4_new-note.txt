@@ -1,0 +1,37 @@
+sequenceDiagram
+    participant browser
+    participant server
+
+    note over browser,server: Typing and hitting save will initiate a post request
+    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note
+    activate server
+
+    note over browser: Will get response from the server and it will redirect to "/notes"
+    server-->>browser: Response Status code 302 and Redirect to "/notes"
+    deactivate server
+
+    note over browser: Browser will then get the HTML document for the route
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/notes
+    activate server
+    server-->>browser: The HTML document
+    deactivate server
+
+    note over browser: Browser will then get the CSS file
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
+    activate server
+    server-->>browser: The CSS File
+    deactivate server
+    
+    note over browser: Browser will then get the Javascript file
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.js
+    activate server
+    server-->>browser: The JavaScript File
+    deactivate server
+
+    Note over browser: The browser will execute the data fetching logic for the notes
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+    activate server
+    server-->>browser: [{ "content": "HTML is easy", "date": "2023-1-1" }, ... ]
+    deactivate server
+
+    Note over browser: The browser executes the function that renders the notes
