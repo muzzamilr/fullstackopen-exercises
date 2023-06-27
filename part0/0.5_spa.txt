@@ -1,0 +1,29 @@
+sequenceDiagram
+    participant browser
+    participant server
+
+    note over browser,server: Hit the url to get the HTML Document
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/spa
+    activate server
+    server-->>browser: The HTML document
+    deactivate server
+
+    note over browser: Browser will then get the CSS file
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
+    activate server
+    server-->>browser: The CSS File
+    deactivate server
+    
+    note over browser: Browser will then get the Javascript file
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/spa.js
+    activate server
+    server-->>browser: The JavaScript File
+    deactivate server
+
+    Note over browser: The browser will execute the data fetching logic for the notes
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+    activate server
+    server-->>browser: [{content: "rty", date: "2023-06-27T05:45:22.141Z"}, ... ]
+    deactivate server
+
+    Note over browser: The browser executes the function that renders the notes
