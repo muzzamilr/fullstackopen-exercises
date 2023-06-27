@@ -14,6 +14,7 @@ const App = () => {
 
   const [selected, setSelected] = useState(0);
   const [votes, setVotes] = useState(Array(anecdotes.length).fill(0));
+  const [mostVoted, setMostVoted] = useState(0);
 
   const handleNextAnecdote = () => {
     setSelected(Math.floor(Math.random() * anecdotes.length));
@@ -23,14 +24,19 @@ const App = () => {
     const dupp = structuredClone(votes);
     dupp[selected] += 1;
     setVotes(dupp);
+    setMostVoted(dupp.indexOf(Math.max(...dupp)));
   };
 
   return (
     <div>
+      <h1>Anecdote of the day</h1>
       <div>{anecdotes[selected]}</div>
       <div>has {votes[selected]} votes</div>
       <button onClick={handleVote}>vote</button>
       <button onClick={handleNextAnecdote}>next anecdote</button>
+      <h1>Anecdote with most votes</h1>
+      <div>{anecdotes[mostVoted]}</div>
+      <div>has {votes[mostVoted]} votes</div>
     </div>
   );
 };
