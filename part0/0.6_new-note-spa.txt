@@ -1,0 +1,11 @@
+sequenceDiagram
+    participant browser
+    participant server
+
+    note over browser: User will type and hit save on button <br> the form element will be accessed the event is preventDefualt <br>and the note is added to the notes array
+    note over browser: Then post request is sent to the server with the payload
+    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+    activate server
+    note over server: Server sent response with a message and status code 201 <br> which means that the new note is created
+    server-->>browser: Status Code 201 {"message":"note created"}
+    deactivate server
