@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { Filter } from "./components/Filter";
+import { PersonForm } from "./components/PersonForm";
+import { Persons } from "./components/Persons";
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -20,7 +23,6 @@ const App = () => {
       return;
     }
     setPersons((per) => [...per, { name: newName, number: newNumber }]);
-    console.log(filteredPersons);
   };
 
   const handleNameChange = (e) => {
@@ -45,29 +47,19 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>
-        filter shown with <input onChange={handleFilterChange} />
-      </div>
+      <Filter handleFilterChange={handleFilterChange} />
       <h2>add a new</h2>
-      <form onSubmit={handleFormSubmit}>
-        <div>
-          name: <input onChange={handleNameChange} value={newName} />
-        </div>
-        <div>
-          number: <input onChange={handleNumberChange} value={newNumber} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <PersonForm
+        handleNumberChange={handleNumberChange}
+        handleNameChange={handleNameChange}
+        handleFormSubmit={handleFormSubmit}
+      />
       <h2>Numbers</h2>
-      {showAll
-        ? persons.map((obj) => (
-            <p key={obj.name}>{obj.name + " " + obj.number} </p>
-          ))
-        : filteredPersons.map((obj) => (
-            <p key={obj.name}>{obj.name + " " + obj.number} </p>
-          ))}
+      <Persons
+        showAll={showAll}
+        persons={persons}
+        filteredPersons={filteredPersons}
+      />
     </div>
   );
 };
