@@ -20,6 +20,7 @@ const App = () => {
         c.name.common.toLowerCase().includes(e.target.value.toLowerCase())
       )
     );
+    if (e.target.value === "") setVisibleCountries([]);
   };
 
   const handleShow = (country) => () => {
