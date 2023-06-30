@@ -1,9 +1,5 @@
 export const Total = (props) => {
   const { parts } = props;
-  return (
-    <h3>
-      total of {parts[0].exercises + parts[1].exercises + parts[2].exercises}{" "}
-      exercises
-    </h3>
-  );
+  const total = parts.reduce((a, b) => a + b.exercises, 0);
+  return <h3>total of {total} exercises</h3>;
 };
