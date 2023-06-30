@@ -22,6 +22,10 @@ const App = () => {
     );
   };
 
+  const handleShow = (country) => () => {
+    setVisibleCountries([country]);
+  };
+
   return (
     <div>
       <div>
@@ -32,7 +36,12 @@ const App = () => {
       ) : visibleCountries.length === 1 ? (
         <Country country={visibleCountries[0]} />
       ) : (
-        visibleCountries.map((c) => <p key={c.name.common}>{c.name.common}</p>)
+        visibleCountries.map((c) => (
+          <div key={c.name.common}>
+            <span key={c.name.common}>{c.name.common}</span>
+            <button onClick={handleShow(c)}>show</button>
+          </div>
+        ))
       )}
     </div>
   );
