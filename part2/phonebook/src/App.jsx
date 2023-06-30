@@ -3,6 +3,7 @@ import { Filter } from "./components/Filter";
 import { PersonForm } from "./components/PersonForm";
 import { Persons } from "./components/Persons";
 import Service from "./PersonsService";
+import { Notification } from "./components/Notification";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -10,6 +11,10 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [showAll, setShowALl] = useState(true);
+  const [notification, setNotification] = useState({
+    message: null,
+    error: null,
+  });
 
   useEffect(() => {
     Service.getAll().then((data) => setPersons(data));
@@ -51,8 +56,11 @@ const App = () => {
       number: newNumber,
     };
 
-    setPersons((per) => [...per, data]);
-    Service.create(data);
+    Service.create(data)
+      .then(() =>
+        setNotification({ message: `Added ${newName}`, error: false })
+      )
+      .finally(() => Service.getAll().then((data) => setPersons(data)));
   };
 
   const handleNameChange = (e) => {
@@ -76,14 +84,19 @@ const App = () => {
 
   const handleDelete = (id, name) => () => {
     if (window.confirm(`Delete ${name} ?`))
-      Service.deleteContact(id).finally(() =>
-        Service.getAll().then((data) => setPersons(data))
-      );
+      Service.deleteContact(id)
+        .catch((e) =>
+          setNotification({
+            message: `Information of ${name} is already removed from the server`,
+          })
+        )
+        .finally(() => Service.getAll().then((data) => setPersons(data)));
   };
 
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={notification.message} error={notification.error} />
       <Filter handleFilterChange={handleFilterChange} />
       <h2>add a new</h2>
       <PersonForm

@@ -8,15 +8,19 @@ export const Persons = ({
     <>
       {showAll
         ? persons.map((obj) => (
-            <div key={obj.id}>
+            <div key={obj.name}>
               {obj.name + " " + obj.number}
-              <button onClick={handleDelete(obj.id, obj.name)}>delete</button>
+              <button key={obj.id} onClick={handleDelete(obj.id, obj.name)}>
+                delete
+              </button>
             </div>
           ))
         : filteredPersons.map((obj) => (
-            <div key={obj.id}>
+            <div key={obj.name}>
               {obj.name + " " + obj.number}
-              <button onClick={handleDelete(obj.id, obj.name)}>delete</button>
+              <button onClick={handleDelete(obj.id, obj.name)} key={obj.id}>
+                delete
+              </button>
             </div>
           ))}
     </>
