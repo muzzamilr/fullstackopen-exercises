@@ -3,10 +3,10 @@ export const Persons = ({ persons, filteredPersons, showAll }) => {
     <>
       {showAll
         ? persons.map((obj) => (
-            <p key={obj.name}>{obj.name + " " + obj.number} </p>
+            <p key={obj.id}>{obj.name + " " + obj.number} </p>
           ))
         : filteredPersons.map((obj) => (
-            <p key={obj.name}>{obj.name + " " + obj.number} </p>
+            <p key={obj.id}>{obj.name + " " + obj.number} </p>
           ))}
     </>
   );
