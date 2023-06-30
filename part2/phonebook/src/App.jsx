@@ -6,6 +6,10 @@ const App = () => {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
+    if (persons.filter((obj) => obj.name === newName).length > 0) {
+      alert(`${newName} is already added to phonebook`);
+      return;
+    }
     setPersons((per) => [...per, { name: newName }]);
   };
 
