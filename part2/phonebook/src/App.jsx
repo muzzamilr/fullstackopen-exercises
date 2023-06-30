@@ -17,9 +17,32 @@ const App = () => {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
+
     if (newName === "" || newNumber === "") return;
-    if (persons.filter((obj) => obj.name === newName).length > 0) {
+
+    const toUpdate = persons.filter(
+      (obj) => obj.name === newName && obj.number !== newNumber
+    );
+
+    const alreadyExists = persons.filter(
+      (obj) => obj.name === newName && obj.number === newNumber
+    );
+
+    if (alreadyExists.length > 0) {
       alert(`${newName} is already added to phonebook`);
+      return;
+    }
+
+    if (toUpdate.length > 0) {
+      const confirm = window.confirm(
+        `${newName} is already added to phonebook, replace the old number with new one?`
+      );
+      if (confirm) {
+        Service.update(toUpdate[0].id, {
+          name: newName,
+          number: newNumber,
+        }).finally(() => Service.getAll().then((data) => setPersons(data)));
+      }
       return;
     }
 
@@ -51,6 +74,13 @@ const App = () => {
     if (e.target.value === "") setShowALl(true);
   };
 
+  const handleDelete = (id, name) => () => {
+    if (window.confirm(`Delete ${name} ?`))
+      Service.deleteContact(id).finally(() =>
+        Service.getAll().then((data) => setPersons(data))
+      );
+  };
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -66,6 +96,7 @@ const App = () => {
         showAll={showAll}
         persons={persons}
         filteredPersons={filteredPersons}
+        handleDelete={handleDelete}
       />
     </div>
   );
