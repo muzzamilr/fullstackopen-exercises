@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "https://still-dew-8306.fly.dev/api/persons";
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const getAll = () => {
   const request = axios.get(BASE_URL);
