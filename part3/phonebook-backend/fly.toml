@@ -1,0 +1,18 @@
+# fly.toml app configuration file generated for still-dew-8306 on 2023-07-02T20:40:37+05:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = "still-dew-8306"
+primary_region = "sin"
+
+[env]
+  PORT = "8080"
+
+[http_service]
+  internal_port = 8080 
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ["app"]
