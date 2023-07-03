@@ -60,6 +60,12 @@ const App = () => {
       .then(() =>
         setNotification({ message: `Added ${newName}`, error: false })
       )
+      .catch((e) =>
+        setNotification({
+          message: e.response.data.error,
+          error: true,
+        })
+      )
       .finally(() => Service.getAll().then((data) => setPersons(data)));
   };
 
@@ -88,6 +94,7 @@ const App = () => {
         .catch((e) =>
           setNotification({
             message: `Information of ${name} is already removed from the server`,
+            error: true,
           })
         )
         .finally(() => Service.getAll().then((data) => setPersons(data)));
