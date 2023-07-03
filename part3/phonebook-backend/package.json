@@ -4,8 +4,8 @@
   "description": "Backend for the Phonebook frontend",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js",
+    "start": "dotenv -e .env node index.js",
+    "dev": "dotenv -e .env nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:ui": "rm -rf dist && cd ../../part2/phonebook/ && npm run build && cp -r dist ../../part3/phonebook-backend",
     "deploy": "fly deploy",
@@ -22,6 +22,7 @@
   },
   "devDependencies": {
     "@flydotio/dockerfile": "^0.2.16",
+    "dotenv-cli": "^7.2.1",
     "nodemon": "^2.0.22"
   }
 }
