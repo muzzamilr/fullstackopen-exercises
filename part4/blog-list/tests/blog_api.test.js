@@ -52,13 +52,23 @@ test("likes property should be 0 if not passed", async () => {
   expect(totalBlogs[totalBlogs.length - 1].likes).toBe(0);
 });
 
-test("cils ", async () => {
+test("return 400 response if any required data is missing", async () => {
   const blog = {
     author: "author",
     url: "https://www.fullstackopen.com",
     likes: 1,
   };
   await api.post("/api/blogs").send(blog).expect(400);
+});
+
+test("deleting a blog", async () => {
+  const blogs = await Blog.find({});
+  await api.delete(`/api/blogs/${blogs[0].id}`).expect(204);
+});
+
+test("updating a blog", async () => {
+  const blogs = await Blog.find({});
+  await api.put(`/api/blogs/${blogs[0].id}`).expect(200);
 });
 
 afterAll(async () => {
