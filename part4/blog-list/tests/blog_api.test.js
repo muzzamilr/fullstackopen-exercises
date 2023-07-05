@@ -24,7 +24,7 @@ test("id property of blog", async () => {
 
 test("blog is added", async () => {
   const blog = {
-    title: "blog",
+    title: "title",
     author: "author",
     url: "https://www.fullstackopen.com",
     likes: 1,
@@ -34,6 +34,22 @@ test("blog is added", async () => {
     .send(blog)
     .expect(201)
     .expect("Content-Type", /application\/json/);
+});
+
+test("likes property should be 0 if not passed", async () => {
+  const blog = {
+    title: "title",
+    author: "author",
+    url: "https://www.fullstackopen.com",
+  };
+  await api
+    .post("/api/blogs")
+    .send(blog)
+    .expect(201)
+    .expect("Content-Type", /application\/json/);
+
+  const totalBlogs = await Blog.find({});
+  expect(totalBlogs[totalBlogs.length - 1].likes).toBe(0);
 });
 
 afterAll(async () => {
