@@ -7,9 +7,6 @@ const blogSchema = new mongoose.Schema({
   likes: Number,
 });
 
-const mongoUrl = process.env.MONGODB_URI;
-mongoose.connect(mongoUrl);
-
 blogSchema.set("toJSON", {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString();
