@@ -52,6 +52,15 @@ test("likes property should be 0 if not passed", async () => {
   expect(totalBlogs[totalBlogs.length - 1].likes).toBe(0);
 });
 
+test("cils ", async () => {
+  const blog = {
+    author: "author",
+    url: "https://www.fullstackopen.com",
+    likes: 1,
+  };
+  await api.post("/api/blogs").send(blog).expect(400);
+});
+
 afterAll(async () => {
   await mongoose.connection.close();
 });
