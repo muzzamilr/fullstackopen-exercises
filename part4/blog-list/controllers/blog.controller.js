@@ -28,7 +28,11 @@ blogsRouter.delete("/:id", async (request, response) => {
   const user = request.user;
   const blog = await Blog.findById({ _id: id });
 
-  if (blog && blog.user.toString() !== user.id.toString()) {
+  if (!user) {
+    return response.status(401).json({ error: "token missing or invalid" });
+  }
+
+  if (blog.user.toString() !== user.id.toString()) {
     response.status(401).json({ error: "Unauthorized" });
   }
 

@@ -80,11 +80,19 @@ test("return 400 response if any required data is missing", async () => {
 
 test("deleting a blog", async () => {
   const blogs = await Blog.find({});
-  console.log(blogs);
   await api
     .delete(`/api/blogs/${blogs[0].id}`)
     .set("Authorization", `Bearer ${token}`)
     .expect(204);
+});
+
+test("Unauthorized 401", async () => {
+  const blogs = await Blog.find({});
+  const token = jwt.sign("abcd", config.SECRET);
+  await api
+    .delete(`/api/blogs/${blogs[0].id}`)
+    .set("Authorization", `Bearer ${token}`)
+    .expect(401);
 });
 
 test("updating a blog", async () => {
