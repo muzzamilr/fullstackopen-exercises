@@ -8,6 +8,7 @@ require("express-async-errors");
 
 const blogsRouter = require("./controllers/blog.controller");
 const usersRouter = require("./controllers/user.controller");
+const loginRouter = require("./controllers/login.controller");
 const middleware = require("./utils/middleware");
 
 mongoose.set("strictQuery", false);
@@ -28,6 +29,7 @@ app.use(middleware.requestLogger);
 
 app.use("/api/blogs", blogsRouter);
 app.use("/api/users", usersRouter);
+app.use("/api/login", loginRouter);
 
 app.use(middleware.unknownEndpoint);
 app.use(middleware.errorHandler);
