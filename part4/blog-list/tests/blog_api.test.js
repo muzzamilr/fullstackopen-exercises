@@ -2,18 +2,29 @@ const mongoose = require("mongoose");
 const supertest = require("supertest");
 const app = require("../app");
 const Blog = require("../models/blog");
+const User = require("../models/user");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const config = require("../utils/config");
 const blogs = require("./blog_lists");
 
 const api = supertest(app);
 
-beforeEach(async () => {
+let token = null;
+beforeAll(async () => {
+  await User.deleteMany({});
   await Blog.deleteMany({});
-  await Blog.insertMany(blogs.oneBlog);
+
+  const passwordHash = await bcrypt.hash("12345", 10);
+  const user = await new User({ username: "name", passwordHash }).save();
+
+  const userForToken = { username: "name", id: user.id };
+  return (token = jwt.sign(userForToken, config.SECRET));
 });
 
 test("length of blogs", async () => {
   const res = await api.get("/api/blogs");
-  expect(res.body).toHaveLength(1);
+  expect(res.body).toHaveLength(0);
 });
 
 test("id property of blog", async () => {
@@ -31,6 +42,7 @@ test("blog is added", async () => {
   };
   await api
     .post("/api/blogs")
+    .set("Authorization", `Bearer ${token}`)
     .send(blog)
     .expect(201)
     .expect("Content-Type", /application\/json/);
@@ -44,6 +56,7 @@ test("likes property should be 0 if not passed", async () => {
   };
   await api
     .post("/api/blogs")
+    .set("Authorization", `Bearer ${token}`)
     .send(blog)
     .expect(201)
     .expect("Content-Type", /application\/json/);
@@ -58,12 +71,20 @@ test("return 400 response if any required data is missing", async () => {
     url: "https://www.fullstackopen.com",
     likes: 1,
   };
-  await api.post("/api/blogs").send(blog).expect(400);
+  await api
+    .post("/api/blogs")
+    .set("Authorization", `Bearer ${token}`)
+    .send(blog)
+    .expect(400);
 });
 
 test("deleting a blog", async () => {
   const blogs = await Blog.find({});
-  await api.delete(`/api/blogs/${blogs[0].id}`).expect(204);
+  console.log(blogs);
+  await api
+    .delete(`/api/blogs/${blogs[0].id}`)
+    .set("Authorization", `Bearer ${token}`)
+    .expect(204);
 });
 
 test("updating a blog", async () => {
